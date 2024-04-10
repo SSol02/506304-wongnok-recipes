@@ -8,6 +8,10 @@
         <link rel="stylesheet" href="regisform.css">
     </head>
     <body>
+    <?php 
+    session_start();
+    error_reporting(E_ERROR | E_PARSE);
+    if($_SESSION['showuser'] == ""){?>
     <!--Login-->
     <button class="open-button" onclick="openForm()">เข้าสู่ระบบ</button>
         <div class="form-popup" id="myForm">
@@ -20,7 +24,7 @@
         <label for="logpsw"><b>Password</b></label>
         <input type="password" name="psw" placeholder="ใส่รหัสผ่านที่ลงทะเบียนไว้" required>
 
-        <button type="submit" class="btn">เข้าสู่ระบบ</button>
+        <button type="submit" name="logbut" value="login" class="btn">เข้าสู่ระบบ</button>
         <button type="button" class="btn cancel" onclick="closeForm()">ยกเลิก</button>
       </form>
      </div>
@@ -40,11 +44,38 @@
         <label for="regispsw"><b>สร้างรหัสผ่านใหม่</b></label>
         <input type="password" name="regispsw" placeholder="รหัสผ่านที่ใช้สำหรับเว็บนี้เท่านี้" required>
 
-        <button type="submit" class="btn">สมัครสมาชิก</button>
+        <button type="submit" name="regbut" value="regis" class="btn">สมัครสมาชิก</button>
         <button type="button" class="btn cancel" onclick="closeFormregis()">ยกเลิก</button>
       </form>
      </div>
     <!--Regis-->
+    <?php } else if($_SESSION['showuser'] != ""){?>
+    <!--logout-->
+      <form action="logout.php" method="post">
+      <button class="open-button">ออกจากระบบ</button>
+      </form>
+    <!--logout-->
+    <!--owner-->
+      <button class="open-button" style="margin: 0px 125px 0px 0px;"onclick="openFormregis()"><?php echo $_SESSION['showuser'];?></button>
+        <div class="form-popup" id="myFormregis">
+      <form class="form-container" name="manage" action="commitpage.php" method="post">
+      <h3>- เกี่ยวกับคุณ -</h3>
+      <label for="menuchoose">จัดการข้อมูล : </label>
+      <select name="menuchoose" required oninvalid="this.setCustomValidity('เลือกรายการก่อน')" oninput="setCustomValidity('')" style="vertical-align:middle;font: 14pt;font-weight: bold; padding: 5px;">
+      <option value="" style="vertical-align:middle;font: 16pt;font-weight: bold;">เลือกรายการ</option>
+      <option value="addrecipes" style="vertical-align:middle;">จัดการสูตรอาหาร</option>
+      <option value="editown" style="vertical-align:middle;">จัดการข้อมูลส่วนตัว</option>
+      </select>
+      <h5>หมายเลขสมาชิก : <?php echo $_SESSION['showid'];?></h5>
+      <input type="hidden" name="userid" value="<?php echo $_SESSION['showid'];?>">
+        <button type="submit" name="okay" value="okay" class="btn">ตกลง</button>
+        <button type="button" class="btn cancel" onclick="closeFormregis()">ปิด</button>
+      </form>
+     </div>
+    <!--owner-->
+    
+     <?php } session_write_close();?>
+<!-- ---------------------------------------------------------------------------------------------------------->
         <center><img src="src/banner.jpg" style="width: auto; height: auto;"></center><br>
         <center><div><a href="#">สูตรยอดฮิต</a>&nbsp;&nbsp;&emsp;
         <a href="#">สูตรมาใหม่</a></div></center><br><br>
@@ -54,132 +85,6 @@
         <input type="submit" value="ค้นหา" name="find"></center>
         </div>
 <div class="maindiv">
-  <div class="card">
-    <div class="container">
-        <h4><b>John Doe</b></h4>
-        <h4><b>John Doe</b></h4>
-        <h4><b>John Doe</b></h4>
-        <h4><b>John Doe</b></h4> 
-        <p>Architect & Engineer</p> 
-    </div>
-  </div>
-  <div class="card">
-    <div class="container">
-        <h4><b>John Doe</b></h4>
-        <h4><b>John Doe</b></h4>
-        <h4><b>John Doe</b></h4>
-        <h4><b>John Doe</b></h4> 
-        <p>Architect & Engineer</p> 
-    </div>
-  </div>
-  <div class="card">
-    <div class="container">
-        <h4><b>John Doe</b></h4>
-        <h4><b>John Doe</b></h4>
-        <h4><b>John Doe</b></h4>
-        <h4><b>John Doe</b></h4> 
-        <p>Architect & Engineer</p> 
-    </div>
-  </div>
-  <div class="card">
-    <div class="container">
-        <h4><b>John Doe</b></h4>
-        <h4><b>John Doe</b></h4>
-        <h4><b>John Doe</b></h4>
-        <h4><b>John Doe</b></h4> 
-        <p>Architect & Engineer</p> 
-    </div>
-  </div>
-  <div class="card">
-    <div class="container">
-        <h4><b>John Doe</b></h4>
-        <h4><b>John Doe</b></h4>
-        <h4><b>John Doe</b></h4>
-        <h4><b>John Doe</b></h4> 
-        <p>Architect & Engineer</p> 
-    </div>
-  </div>
-  <div class="card">
-    <div class="container">
-        <h4><b>John Doe</b></h4>
-        <h4><b>John Doe</b></h4>
-        <h4><b>John Doe</b></h4>
-        <h4><b>John Doe</b></h4> 
-        <p>Architect & Engineer</p> 
-    </div>
-  </div>
-  <div class="card">
-    <div class="container">
-        <h4><b>John Doe</b></h4>
-        <h4><b>John Doe</b></h4>
-        <h4><b>John Doe</b></h4>
-        <h4><b>John Doe</b></h4> 
-        <p>Architect & Engineer</p> 
-    </div>
-  </div>
-  <div class="card">
-    <div class="container">
-        <h4><b>John Doe</b></h4>
-        <h4><b>John Doe</b></h4>
-        <h4><b>John Doe</b></h4>
-        <h4><b>John Doe</b></h4> 
-        <p>Architect & Engineer</p> 
-    </div>
-  </div>
-  <div class="card">
-    <div class="container">
-        <h4><b>John Doe</b></h4>
-        <h4><b>John Doe</b></h4>
-        <h4><b>John Doe</b></h4>
-        <h4><b>John Doe</b></h4> 
-        <p>Architect & Engineer</p> 
-    </div>
-  </div>
-  <div class="card">
-    <div class="container">
-        <h4><b>John Doe</b></h4>
-        <h4><b>John Doe</b></h4>
-        <h4><b>John Doe</b></h4>
-        <h4><b>John Doe</b></h4> 
-        <p>Architect & Engineer</p> 
-    </div>
-  </div>
-  <div class="card">
-    <div class="container">
-        <h4><b>John Doe</b></h4>
-        <h4><b>John Doe</b></h4>
-        <h4><b>John Doe</b></h4>
-        <h4><b>John Doe</b></h4> 
-        <p>Architect & Engineer</p> 
-    </div>
-  </div>
-  <div class="card">
-    <div class="container">
-        <h4><b>John Doe</b></h4>
-        <h4><b>John Doe</b></h4>
-        <h4><b>John Doe</b></h4>
-        <h4><b>John Doe</b></h4> 
-        <p>Architect & Engineer</p> 
-    </div>
-  </div>
-  <div class="card">
-    <div class="container">
-        <h4><b>John Doe</b></h4>
-        <h4><b>John Doe</b></h4>
-        <h4><b>John Doe</b></h4>
-        <h4><b>John Doe</b></h4> 
-        <p>Architect & Engineer</p> 
-    </div>
-  </div>
-  <div class="card">
-    <div class="container">
-        <h4><b>John Doe</b></h4>
-        <h4><b>John Doe</b></h4>
-        <h4><b>John Doe</b></h4>
-        <h4><b>John Doe</b></h4> 
-        <p>Architect & Engineer</p> 
-    </div>
-  </div>
   <div class="card">
     <div class="container">
         <h4><b>John Doe</b></h4>
