@@ -11,14 +11,14 @@
     <!--Login-->
     <button class="open-button" onclick="openForm()">เข้าสู่ระบบ</button>
         <div class="form-popup" id="myForm">
-      <form action="/action_page.php" class="form-container">
+      <form class="form-container" name="login" action="commitpage.php" method="post">
         <h2>เข้าสู่ระบบ</h2>
 
-        <label for="email"><b>Email</b></label>
-        <input type="text" placeholder="ใส่ Email ที่ลงทะเบียนไว้" name="email" required>
+        <label for="logemail"><b>Email</b></label>
+        <input type="text" name="email" placeholder="ใส่ Email ที่ลงทะเบียนไว้" required>
 
-        <label for="psw"><b>Password</b></label>
-        <input type="password" placeholder="ใส่รหัสผ่านที่ลงทะเบียนไว้" name="psw" required>
+        <label for="logpsw"><b>Password</b></label>
+        <input type="password" name="psw" placeholder="ใส่รหัสผ่านที่ลงทะเบียนไว้" required>
 
         <button type="submit" class="btn">เข้าสู่ระบบ</button>
         <button type="button" class="btn cancel" onclick="closeForm()">ยกเลิก</button>
@@ -28,19 +28,19 @@
     <!--Regis-->
         <button class="open-button" style="margin: 0px 125px 0px 0px;"onclick="openFormregis()">สมัครสมาชิก</button>
         <div class="form-popup" id="myFormregis">
-      <form action="/action_page.php" class="form-container">
+      <form class="form-container" name="regis" action="commitpage.php" method="post">
         <h2>สมัครสมาชิก</h2>
 
-        <label for="user"><b>ชื่อที่แสดง</b></label>
-        <input type="text" placeholder="ชื่อที่จะแสดงในเว็บ" name="user" required>
+        <label for="regisuser"><b>ชื่อที่แสดง</b></label>
+        <input type="text" name="regisuser" placeholder="ชื่อที่จะแสดงในเว็บ" required>
 
-        <label for="email"><b>Email</b></label>
-        <input type="text" placeholder="Email" name="email" required>
+        <label for="regisemail"><b>Email</b></label>
+        <input type="text" name="regisemail" placeholder="Email" required>
 
-        <label for="psw"><b>สร้างรหัสผ่านใหม่</b></label>
-        <input type="password" placeholder="รหัสผ่านที่ใช้สำหรับเว็บนี้เท่านี้" name="psw" required>
+        <label for="regispsw"><b>สร้างรหัสผ่านใหม่</b></label>
+        <input type="password" name="regispsw" placeholder="รหัสผ่านที่ใช้สำหรับเว็บนี้เท่านี้" required>
 
-        <button type="submit" class="btn">สมัคร</button>
+        <button type="submit" class="btn">สมัครสมาชิก</button>
         <button type="button" class="btn cancel" onclick="closeFormregis()">ยกเลิก</button>
       </form>
      </div>
