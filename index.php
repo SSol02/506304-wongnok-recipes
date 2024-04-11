@@ -85,6 +85,31 @@
         <input type="submit" value="ค้นหา" name="find"></center>
         </div>
 <div class="maindiv">
+  <?php 
+  $serverName = "localhost";
+  $userName = "root";
+  $userPassword = "";
+  $dbName = "wongnok";
+  $objCon = mysqli_connect($serverName, $userName, $userPassword, $dbName);
+  
+  mysqli_set_charset($objCon, "utf8");
+
+  $getrecipe = "SELECT rid,rname,rpic,rrate,user FROM recipes,verilog WHERE verilog.id = recipes.id";
+  $sqlgetrec = mysqli_query($objCon, $getrecipe);
+  while ($recfet = mysqli_fetch_array($sqlgetrec, MYSQLI_ASSOC)) {
+  ?>
+  <div class="card">
+    <div class="container">
+    <img src="uploads/<?php echo $recfet['rpic'];?>" width="100%">
+    <h2><b><?php echo $recfet['rname'];?></b></h2>
+    <h4>แจกสูตรโดย : <?php echo $recfet['user'];?></h4>
+    <h4>ยอดคนถูกใจ <?php echo $recfet['rrate'];?></h4>
+    <a href="#">ดูเพิ่มเติม...</a>
+    </div>
+  </div>
+  <?php }?>
+
+  <!--
   <div class="card">
     <div class="container">
         <h4><b>John Doe</b></h4>
@@ -94,33 +119,7 @@
         <p>Architect & Engineer</p> 
     </div>
   </div>
-  <div class="card">
-    <div class="container">
-        <h4><b>John Doe</b></h4>
-        <h4><b>John Doe</b></h4>
-        <h4><b>John Doe</b></h4>
-        <h4><b>John Doe</b></h4> 
-        <p>Architect & Engineer</p> 
-    </div>
-  </div>
-  <div class="card">
-    <div class="container">
-        <h4><b>John Doe</b></h4>
-        <h4><b>John Doe</b></h4>
-        <h4><b>John Doe</b></h4>
-        <h4><b>John Doe</b></h4> 
-        <p>Architect & Engineer</p> 
-    </div>
-  </div>
-  <div class="card">
-    <div class="container">
-        <h4><b>John Doe</b></h4>
-        <h4><b>John Doe</b></h4>
-        <h4><b>John Doe</b></h4>
-        <h4><b>John Doe</b></h4> 
-        <p>Architect & Engineer</p> 
-    </div>
-  </div>
+  -->
 </div>
     </body>
 </html>

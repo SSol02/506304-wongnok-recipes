@@ -5,12 +5,29 @@ if(isset($_POST['logbut'])){
 else{
     $_POST['logbut'] = "";
 }
+
 if(isset($_POST['regbut'])){
     $_POST['regbut'] = "regis";
 }
+
 else{
     $_POST['regbut'] = "";
 }
+
+if(isset($_POST['menuchoose'])){
+    $_POST['menuchoose'] = "addrecipes";
+}
+else{
+    $_POST['menuchoose'] = "";
+}
+
+if(isset($_POST['comitem'])){
+    $_POST['comitem'] = "addall";
+}
+else{
+    $_POST['comitem'] = "";
+}
+
 if($_POST['logbut'] == "login"){
     $email = htmlspecialchars($_POST['email'] ?? "");
     $psw = htmlspecialchars($_POST['psw'] ?? "");
@@ -60,6 +77,66 @@ if($_POST['regbut'] == "regis"){
 
     $ins = "INSERT INTO verilog(user,email,pass) VALUES('$beqregisuser','$beqregisemail','$beqregispsw')";
     $doins = mysqli_query($objCon, $ins);
+    mysqli_close($objCon);
+    header("location:index.php");
+}
+
+if($_POST['menuchoose'] == "addrecipes"){
+    header("location:addrecipe.php");
+}
+
+if($_POST['comitem'] == "addall"){
+    
+    if (isset($_FILES["image"]) && $_FILES["image"]["error"] == 0) {
+        $allowed_types = array('jpg', 'jpeg', 'png', 'gif');
+        $file_extension = pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
+
+        // Check file extension
+        if (!in_array($file_extension, $allowed_types)) {
+            echo "Only JPG, JPEG, PNG, and GIF files are allowed.";
+            exit;
+        }
+
+        // Check file size (max 5MB)
+        if ($_FILES["image"]["size"] > 5000000) {
+            echo "Sorry, your file is too large.";
+            exit;
+        }
+
+        // Generate unique file name to prevent overwriting existing files
+        $file_name = uniqid() . '.' . $file_extension;
+
+        // Move uploaded file to desired directory
+        if (move_uploaded_file($_FILES["image"]["tmp_name"], "uploads/" . $file_name)) {
+            echo "The file " . htmlspecialchars(basename($_FILES["image"]["name"])) . " has been uploaded.";
+        } else {
+            echo "Sorry, there was an error uploading your file.";
+        }
+    } else {
+        echo "No file was uploaded.";
+    }
+
+    session_start();
+    $userid = $_SESSION['showid'];
+
+    $serverName = "localhost";
+    $userName = "root";
+    $userPassword = "";
+    $dbName = "wongnok";
+    $objCon = mysqli_connect($serverName, $userName, $userPassword, $dbName);
+    
+    mysqli_set_charset($objCon, "utf8");
+
+    $insname = $_POST['menuname'];
+    $inshowto = $_POST['howto'];
+    $insname = mysqli_real_escape_string($objCon, $insname);
+    $inshowto = mysqli_real_escape_string($objCon, $inshowto);
+    $insimgname = mysqli_real_escape_string($objCon, $file_name);
+
+    $insrecipe = "INSERT INTO recipes(rname,rdetail,rpic,rrate,rself,id) VALUES('$insname','$inshowto','$insimgname','0','not','$userid')";
+    $getrec = mysqli_query($objCon, $insrecipe);
+
+    session_write_close();
     mysqli_close($objCon);
     header("location:index.php");
 }
