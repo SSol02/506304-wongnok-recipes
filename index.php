@@ -94,7 +94,7 @@
   
   mysqli_set_charset($objCon, "utf8");
 
-  $getrecipe = "SELECT rid,rname,rpic,rrate,user FROM recipes,verilog WHERE verilog.id = recipes.id";
+  $getrecipe = "SELECT recipes.rid,rname,rpic,rview,user,gotlike FROM recipes,verilog,viewlike WHERE verilog.id = recipes.id AND recipes.rid = viewlike.rid";
   $sqlgetrec = mysqli_query($objCon, $getrecipe);
   while ($recfet = mysqli_fetch_array($sqlgetrec, MYSQLI_ASSOC)) {
   ?>
@@ -103,7 +103,8 @@
     <img src="uploads/<?php echo $recfet['rpic'];?>" width="100%">
     <h2><b><?php echo $recfet['rname'];?></b></h2>
     <h4>แจกสูตรโดย : <?php echo $recfet['user'];?></h4>
-    <h4>ยอดคนถูกใจ <?php echo $recfet['rrate'];?></h4>
+    <h4>ยอดคนดู <?php echo $recfet['rview'];?></h4>
+    <h4>ยอดคนถูกใจ <?php echo $recfet['gotlike'];?></h4>
     <a href="#">ดูเพิ่มเติม...</a>
     </div>
   </div>
