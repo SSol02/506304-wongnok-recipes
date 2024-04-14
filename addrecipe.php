@@ -19,11 +19,9 @@ if($_SESSION['showuser'] != "" && $_SESSION['showid'] != ""){
         <button type="submit" name="comitem" value="addall">เพิ่มสูตร</button>
         </form>
         </div>
-        <div><h2>แก้ไขสูตรอาหาร</h2>
-        </div>
-        <div><h2>ลบสูตรอาหาร</h2>
+        <div><h2>จัดการสูตรอาหาร</h2>
         <?php 
-        $idfordel = $_SESSION['showid'];
+        $idformng = $_SESSION['showid'];
         $serverName = "localhost";
         $userName = "root";
         $userPassword = "";
@@ -32,12 +30,15 @@ if($_SESSION['showuser'] != "" && $_SESSION['showid'] != ""){
     
         mysqli_set_charset($objCon, "utf8");
 
-        $listown = "SELECT rid,rname FROM recipes WHERE id = '$idfordel'";
+        $listown = "SELECT recipes.rid,rname,viewid FROM recipes,viewlike WHERE recipes.rid = viewlike.rid AND recipes.id = '$idformng'";
         $comlistown = mysqli_query($objCon, $listown);
         while ($fetlistown = mysqli_fetch_array($comlistown, MYSQLI_ASSOC)) { ?>
-            <form name="fordel" method="post" action="del.php">
-            <input type="hidden" name="delid" value="<?php echo $fetlistown['rid'];?>">
-            <div><?php echo $fetlistown['rname']," ";?><button type="submit" name="delitem" value="delt">ลบ</button></div>
+            <form name="formng" method="post" action="mng.php">
+            <input type="hidden" name="mngid" value="<?php echo $fetlistown['rid'];?>">
+            <input type="hidden" name="vid" value="<?php echo $fetlistown['viewid'];?>">
+            <div><?php echo $fetlistown['rname']," ";?>&ensp;
+            <button type="submit" name="upitem" value="upd">แก้ไข</button>&ensp;
+            <button type="submit" name="delitem" value="delt">ลบ</button></div><br>
         </form>
         <?php } 
         session_write_close();

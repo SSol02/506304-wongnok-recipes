@@ -94,21 +94,25 @@
   
   mysqli_set_charset($objCon, "utf8");
 
-  $getrecipe = "SELECT recipes.rid,rname,rpic,rview,user,gotlike FROM recipes,verilog,viewlike WHERE verilog.id = recipes.id AND recipes.rid = viewlike.rid";
+  $getrecipe = "SELECT recipes.rid,rname,rpic,rview,user,gotlike,verilog.id FROM recipes,verilog,viewlike WHERE verilog.id = recipes.id AND recipes.rid = viewlike.rid";
   $sqlgetrec = mysqli_query($objCon, $getrecipe);
   while ($recfet = mysqli_fetch_array($sqlgetrec, MYSQLI_ASSOC)) {
   ?>
   <div class="card">
+  <form name="showitem" method="post" action="explore.php" target="_blank">
     <div class="container">
     <img src="uploads/<?php echo $recfet['rpic'];?>" width="100%">
     <h2><b><?php echo $recfet['rname'];?></b></h2>
     <h4>แจกสูตรโดย : <?php echo $recfet['user'];?></h4>
     <h4>ยอดคนดู <?php echo $recfet['rview'];?></h4>
     <h4>ยอดคนถูกใจ <?php echo $recfet['gotlike'];?></h4>
-    <a href="#">ดูเพิ่มเติม...</a>
+    <input type="hidden" name="itemid" value="<?php echo $recfet['rid'];?>">
+    <input type="hidden" name="ownuser" value="<?php echo $recfet['id'];?>">
+    <button type="submit" name="viewmore" value="getshow">ดูเพิ่มเติม...</button>
     </div>
+    </form>
   </div>
-  <?php }?>
+  <?php } mysqli_close($objCon);?>
 
   <!--
   <div class="card">

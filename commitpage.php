@@ -128,13 +128,23 @@ if($_POST['comitem'] == "addall"){
     mysqli_set_charset($objCon, "utf8");
 
     $insname = $_POST['menuname'];
+    $insinge = $_POST['inge'];
     $inshowto = $_POST['howto'];
-    $insname = mysqli_real_escape_string($objCon, $insname);
-    $inshowto = mysqli_real_escape_string($objCon, $inshowto);
+
+    $insnames = mysqli_real_escape_string($objCon, $insname);
+    $insinges = mysqli_real_escape_string($objCon, $insinge);
+    $inshowtos = mysqli_real_escape_string($objCon, $inshowto);
     $insimgname = mysqli_real_escape_string($objCon, $file_name);
 
-    $insrecipe = "INSERT INTO recipes(rname,rdetail,rpic,rrate,rself,id) VALUES('$insname','$inshowto','$insimgname','0','not','$userid')";
-    $getrec = mysqli_query($objCon, $insrecipe);
+    $insrecipe = "INSERT INTO recipes(rname,ringe,rdetail,rpic,rview,id) VALUES('$insnames','$insinges','$inshowtos','$insimgname','0','$userid')";
+    mysqli_query($objCon, $insrecipe);
+
+    $selforlike = "SELECT rid FROM `recipes` ORDER BY rid DESC LIMIT 1";
+    $getrerid = mysqli_query($objCon, $selforlike);
+    $rerid = mysqli_fetch_array($getrerid,MYSQLI_ASSOC);
+    $reridlast = $rerid['rid'];
+    $insvlike = "INSERT INTO viewlike(id,rid,gotlike) VALUES('$userid','$reridlast',0)";
+    mysqli_query($objCon, $insvlike);
 
     session_write_close();
     mysqli_close($objCon);
