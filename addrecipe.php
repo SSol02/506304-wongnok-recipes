@@ -10,6 +10,7 @@ if($_SESSION['showuser'] != "" && $_SESSION['showid'] != ""){
         </title>
     </head>
     <body>
+        <a href="index.php">กลับหน้าหลัก</a><br>
         <div><h2>เพิ่มสูตรอาหาร</h2>
         <form name="addre" method="post" action="commitpage.php" enctype="multipart/form-data">
         ชื่อเมนู : <input type="text" name="menuname"><br><br>
@@ -20,6 +21,13 @@ if($_SESSION['showuser'] != "" && $_SESSION['showid'] != ""){
         </form>
         </div>
         <div><h2>จัดการสูตรอาหาร</h2>
+        <table>
+            <tr>
+                <td>รายการสูตร</td>
+                <td><center>วัตถุดิบ</center></td>
+                <td><center>วิธีทำ</center></td>
+                <td><center>การจัดการ</center></td>
+            </tr>
         <?php 
         $idformng = $_SESSION['showid'];
         $serverName = "localhost";
@@ -30,19 +38,25 @@ if($_SESSION['showuser'] != "" && $_SESSION['showid'] != ""){
     
         mysqli_set_charset($objCon, "utf8");
 
-        $listown = "SELECT recipes.rid,rname,viewid FROM recipes,viewlike WHERE recipes.rid = viewlike.rid AND recipes.id = '$idformng'";
+        $listown = "SELECT recipes.rid,rname,ringe,rdetail,viewid,hid FROM recipes,viewlike,hisview WHERE recipes.rid = viewlike.rid AND recipes.rid = hisview.rid AND recipes.id = '$idformng'";
         $comlistown = mysqli_query($objCon, $listown);
         while ($fetlistown = mysqli_fetch_array($comlistown, MYSQLI_ASSOC)) { ?>
             <form name="formng" method="post" action="mng.php">
             <input type="hidden" name="mngid" value="<?php echo $fetlistown['rid'];?>">
             <input type="hidden" name="vid" value="<?php echo $fetlistown['viewid'];?>">
-            <div><?php echo $fetlistown['rname']," ";?>&ensp;
-            <button type="submit" name="upitem" value="upd">แก้ไข</button>&ensp;
-            <button type="submit" name="delitem" value="delt">ลบ</button></div><br>
+            <input type="hidden" name="hisid" value="<?php echo $fetlistown['hid'];?>">
+            <tr>
+                <td><?php echo $fetlistown['rname'];?></td>
+                <td><textarea name="upinge" rows="10" cols="50" placeholder="ใส่วัตถุดิบ" style="vertical-align:middle;"><?php echo $fetlistown['ringe'];?></textarea></td>
+                <td><textarea name="uphowto" rows="10" cols="50" placeholder="ใส่วิธีทำ" style="vertical-align:middle;"><?php echo $fetlistown['rdetail'];?></textarea></td>
+            <td><button type="submit" name="upitem" value="upd">แก้ไขสูตร</button>&ensp;
+            <button type="submit" name="delitem" value="delt">ลบสูตร</button></td>
+            </tr>
         </form>
         <?php } 
         session_write_close();
         mysqli_close($objCon);?>
+        </table>
         </div>
     </body>
 </html>

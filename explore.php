@@ -7,10 +7,20 @@ $userid = $_POST['ownuser'];
 
 session_start();
 
-if (!isset($_SESSION['counter']) || !isset($_SESSION['visited'])) {
-    $_SESSION['counter'] = 1;
-    $_SESSION['visited'] = true;
+if(isset($_COOKIE['session_cookie'])) {
+    $session_id = $_COOKIE['session_cookie'];
 
+} else {
+    $session_id = uniqid();
+
+    $cookie_name = "session_cookie";
+    $cookie_value = $session_id;
+    $cookie_expiration = time() + 86400;
+
+    setcookie($cookie_name, $cookie_value, $cookie_expiration, '/');
+}
+
+if($recipesid != ""){
     $serverName = "localhost";
     $userName = "root";
     $userPassword = "";
@@ -19,12 +29,18 @@ if (!isset($_SESSION['counter']) || !isset($_SESSION['visited'])) {
   
     mysqli_set_charset($objCon, "utf8");
 
-    $upview = "UPDATE recipes SET rview = rview + 1 WHERE rid = '$recipesid'";
-    $sqlup = mysqli_query($objCon, $upview);
+    $srcview = "SELECT huser,rid FROM hisview WHERE huser = '$session_id' AND rid = '$recipesid'";
+    $sqlsrcview = mysqli_query($objCon, $srcview);
+    $getsrcview = mysqli_fetch_array($sqlsrcview,MYSQLI_ASSOC);
 
-    session_write_close();
+    if(!$getsrcview){
+        $upview = "UPDATE recipes SET rview = rview + 1 WHERE rid = '$recipesid'";
+        mysqli_query($objCon, $upview);
+
+        $inshisview = "INSERT INTO hisview(huser,rid) VALUES('$session_id','$recipesid')";
+        mysqli_query($objCon, $inshisview);
+    }
 }
-
 ?>
 
 <!DOCTYPE html>

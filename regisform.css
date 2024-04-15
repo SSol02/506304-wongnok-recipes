@@ -10,6 +10,7 @@
   right: 28px;
   width: 120px;
   border-radius: 5px;
+  z-index: 9;
 }
 
 /* The popup form - hidden by default */
@@ -19,7 +20,7 @@
   bottom: 0;
   right: 15px;
   border: 3px solid #f1f1f1;
-  z-index: 9;
+  z-index: 10;
 }
 
 /* Add styles to the form container */
@@ -27,6 +28,7 @@
   max-width: 300px;
   padding: 10px;
   background-color: white;
+  z-index: 9;
 }
 
 /* Full-width input fields */
@@ -36,12 +38,14 @@
   margin: 5px 0 22px 0;
   border: none;
   background: #f1f1f1;
+  z-index: 9;
 }
 
 /* When the inputs get focus, do something */
 .form-container input[type=text]:focus, .form-container input[type=password]:focus {
   background-color: #ddd;
   outline: none;
+  z-index: 9;
 }
 
 /* Set a style for the submit/login button */
@@ -54,14 +58,17 @@
   width: 100%;
   margin-bottom:10px;
   opacity: 0.8;
+  z-index: 9;
 }
 
 /* Add a red background color to the cancel button */
 .form-container .cancel {
   background-color: red;
+  z-index: 9;
 }
 
 /* Add some hover effects to buttons */
 .form-container .btn:hover, .open-button:hover {
   opacity: 1;
+  z-index: 9;
 }

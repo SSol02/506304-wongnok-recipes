@@ -13,14 +13,7 @@ else{
     $_POST['delitem'] = "";
 }
 
-if(isset($_POST['upcomitem'])){
-    $_POST['upcomitem'] = "upaddall";
-}
-else{
-    $_POST['upcomitem'] = "";
-}
-
-if($_POST['upitem'] == "" && $_POST['delitem'] == "" && $_POST['upcomitem'] == "")
+if($_POST['upitem'] == "" && $_POST['delitem'] == "")
 {
     header("location:index.php");
 }
@@ -28,6 +21,10 @@ if($_POST['upitem'] == "" && $_POST['delitem'] == "" && $_POST['upcomitem'] == "
 ///////////////////////////////////////////////////////
 
 if($_POST['upitem']=="upd"){
+
+$upmngid = htmlspecialchars($_POST['mngid'] ?? "");
+$updinge = htmlspecialchars($_POST['upinge'] ?? "");
+$updhowto = htmlspecialchars($_POST['uphowto'] ?? "");
     
 $goupitem = $_POST['mngid'];
 $serverName = "localhost";
@@ -38,20 +35,15 @@ $objCon = mysqli_connect($serverName, $userName, $userPassword, $dbName);
 
 mysqli_set_charset($objCon, "utf8");
 
-$goup = "SELECT ringe,rdetail FROM recipes WHERE rid = '$goupitem'";
-$sqlup = mysqli_query($objCon, $goup);
-$resup = mysqli_fetch_array($sqlup,MYSQLI_ASSOC);
-?>
+$sqlupmngid = mysqli_real_escape_string($objCon, $upmngid);
+$sqlupinge = mysqli_real_escape_string($objCon, $updinge);
+$sqluphowto = mysqli_real_escape_string($objCon, $updhowto);
 
-<form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post">
-    วัตถุดิบ : <textarea name="upinge" rows="10" cols="50" placeholder="ใส่วัตถุดิบ" style="vertical-align:middle;"><?php echo $resup['ringe']; ?></textarea><br><br>
-    &nbsp;&ensp;วิธีทำ : <textarea name="uphowto" rows="10" cols="50" placeholder="ใส่วิธีทำ" style="vertical-align:middle;"><?php echo $resup['rdetail']; ?></textarea><br><br>
-    <button type="submit" name="upcomitem" value="upaddall" style="margin-left: 200px;">แก้ไข</button>
-</form>
-
-<?php
+$updall = "UPDATE recipes SET ringe = '$sqlupinge', rdetail = '$sqluphowto' WHERE rid = '$sqlupmngid'";
+mysqli_query($objCon, $updall);
 
 mysqli_close($objCon);
+header("Location: addrecipe.php");
 }
 
 ////////////////////////////////////////////////////////
@@ -60,6 +52,7 @@ if($_POST['delitem']=="delt"){
 
 $godelid = $_POST['mngid'];
 $godelvid = $_POST['vid'];
+$godelhid = $_POST['hisid'];
 $serverName = "localhost";
 $userName = "root";
 $userPassword = "";
@@ -71,20 +64,15 @@ mysqli_set_charset($objCon, "utf8");
 $godelvlike = "DELETE FROM viewlike WHERE viewid = '$godelvid'";
 mysqli_query($objCon, $godelvlike);
 
+$godelview = "DELETE FROM hisview WHERE hid = '$godelhid'";
+mysqli_query($objCon, $godelview);
+
 $godel = "DELETE FROM recipes WHERE rid = '$godelid'";
 mysqli_query($objCon, $godel);
 
 mysqli_close($objCon);
 header("Location: addrecipe.php");
+
 }
 
-if ($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["upcomitem"] == "upaddall") {
-    /*$upreinge = $_POST['upinge'];
-    $uprehowto = $_POST['uphowto'];
-    $chkupinge = mysqli_real_escape_string($objCon, $upreinge);
-    $chkuphowto = mysqli_real_escape_string($objCon, $uprehowto);
-
-    $uptwotext = "UPDATE"
-    */
-}
 ?>
