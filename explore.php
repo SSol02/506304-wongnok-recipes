@@ -47,7 +47,6 @@ if($recipesid != ""){
 <html>
     <head>
     <title>Wongnok : สูตรอาหารวงนอก</title>
-    
     </head>
     <body>
     <?php 
@@ -70,12 +69,25 @@ if($recipesid != ""){
     echo "ชื่อเมนู : ",$resdat['rname']; echo '<br><br>';
     echo "วัตถุดิบ : ",$resdat['ringe']; echo '<br><br>';
     echo "วิธีทำ : ",$resdat['rdetail'];
+    ?>
+    <br><br>
+    <?php
+    $chkuserid = htmlspecialchars($_SESSION['showuser'] ?? "");
+    if($chkuserid == ""){ ?>
+    &emsp;&emsp;&emsp;<button type="submit" name="like" value="like" onclick="myFunction()" class="btn">ถูกใจ</button>
+    <?php }
 
 
 
 
-
+    //$_SESSION['showid']
     mysqli_close($objCon);
     ?>
     </body>
     </html>
+    <script>
+    function myFunction() {
+    alert("กรุณาเข้าสู่ระบบ");
+    window.location.href = "login.php";
+    }
+    </script>
