@@ -6,7 +6,7 @@ if($_SESSION['showuser'] != "" && $_SESSION['showid'] != ""){
 <html>
     <head>
         <title>
-            Wongnok : สูตรอาหารวงนอก
+            Wongnok : จัดการสูตรอาหาร
         </title>
     </head>
     <body>
