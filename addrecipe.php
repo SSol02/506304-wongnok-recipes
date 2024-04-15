@@ -38,13 +38,12 @@ if($_SESSION['showuser'] != "" && $_SESSION['showid'] != ""){
     
         mysqli_set_charset($objCon, "utf8");
 
-        $listown = "SELECT recipes.rid,rname,ringe,rdetail,viewid,hid FROM recipes,viewlike,hisview WHERE recipes.rid = viewlike.rid AND recipes.rid = hisview.rid AND recipes.id = '$idformng'";
+        $listown = "SELECT recipes.rid,rname,ringe,rdetail,viewid FROM recipes,viewlike WHERE recipes.rid = viewlike.rid AND recipes.id = '$idformng'";
         $comlistown = mysqli_query($objCon, $listown);
         while ($fetlistown = mysqli_fetch_array($comlistown, MYSQLI_ASSOC)) { ?>
             <form name="formng" method="post" action="mng.php">
             <input type="hidden" name="mngid" value="<?php echo $fetlistown['rid'];?>">
             <input type="hidden" name="vid" value="<?php echo $fetlistown['viewid'];?>">
-            <input type="hidden" name="hisid" value="<?php echo $fetlistown['hid'];?>">
             <tr>
                 <td><?php echo $fetlistown['rname'];?></td>
                 <td><textarea name="upinge" rows="10" cols="50" placeholder="ใส่วัตถุดิบ" style="vertical-align:middle;"><?php echo $fetlistown['ringe'];?></textarea></td>

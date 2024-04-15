@@ -52,7 +52,6 @@ if($_POST['delitem']=="delt"){
 
 $godelid = $_POST['mngid'];
 $godelvid = $_POST['vid'];
-$godelhid = $_POST['hisid'];
 $serverName = "localhost";
 $userName = "root";
 $userPassword = "";
@@ -64,8 +63,8 @@ mysqli_set_charset($objCon, "utf8");
 $godelvlike = "DELETE FROM viewlike WHERE viewid = '$godelvid'";
 mysqli_query($objCon, $godelvlike);
 
-$godelview = "DELETE FROM hisview WHERE hid = '$godelhid'";
-mysqli_query($objCon, $godelview);
+$godelhid = "DELETE FROM hisview WHERE rid IN (SELECT rid FROM recipes WHERE rid = '$godelid')";
+mysqli_query($objCon, $godelhid);
 
 $godel = "DELETE FROM recipes WHERE rid = '$godelid'";
 mysqli_query($objCon, $godel);
