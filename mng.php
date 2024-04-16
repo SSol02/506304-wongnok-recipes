@@ -13,7 +13,14 @@ else{
     $_POST['delitem'] = "";
 }
 
-if($_POST['upitem'] == "" && $_POST['delitem'] == "")
+if(isset($_POST['willlike'])){
+    $_POST['willlike'] = "like";
+}
+else{
+    $_POST['willlike'] = "";
+}
+
+if($_POST['upitem'] == "" && $_POST['delitem'] == "" && $_POST['willlike'] == "")
 {
     header("location:index.php");
 }
@@ -74,4 +81,27 @@ header("Location: addrecipe.php");
 
 }
 
+if($_POST['willlike'] == "like"){
+    session_start();
+    $chkitemlike = $_POST['ritemid'];
+    $userlikeid = $_SESSION['showid'];
+
+    $serverName = "localhost";
+    $userName = "root";
+    $userPassword = "";
+    $dbName = "wongnok";
+    $objCon = mysqli_connect($serverName, $userName, $userPassword, $dbName);
+
+    mysqli_set_charset($objCon, "utf8");
+
+    $golike = "UPDATE viewlike SET gotlike = gotlike + 1 WHERE rid IN (SELECT rid FROM viewlike WHERE rid = '$chkitemlike')";
+    mysqli_query($objCon, $golike);
+
+    $inslikehis = "INSERT INTO hislike(userlike,itemlike) VALUES('$userlikeid','$chkitemlike')";
+    mysqli_query($objCon, $inslikehis);
+
+    session_write_close();
+    echo "<script>window.close();</script>";
+    
+}
 ?>

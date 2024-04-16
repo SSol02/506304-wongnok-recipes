@@ -6,47 +6,61 @@
         </title>
         <link rel="stylesheet" href="regisform2.css">
     </head>
-    <body onload="openForm(),openFormregis()">
-    <div class="main">
-        <div class="form-popup2" id="myForm">
-      <form class="form-container" name="login" action="commitpage.php" method="post">
-        <h2>เข้าสู่ระบบ</h2>
-        <label for="logemail"><b>Email</b></label>
-        <input type="text" name="email" placeholder="ใส่ Email ที่ลงทะเบียนไว้" required>
-
-        <label for="logpsw"><b>Password</b></label>
-        <input type="password" name="psw" placeholder="ใส่รหัสผ่านที่ลงทะเบียนไว้" required>
-
-        <button type="submit" name="logbut" value="login" class="btn">เข้าสู่ระบบ</button>
-      </form>
-     </div>
-    <!--Login-->
-    <!--Regis-->
-        <div class="form-popup" id="myFormregis">
-      <form class="form-container" name="regis" action="commitpage.php" method="post">
-        <h2>สมัครสมาชิก</h2>
-        <label for="regisuser"><b>ชื่อที่แสดง</b></label>
-        <input type="text" name="regisuser" placeholder="ชื่อที่จะแสดงในเว็บ" required>
-
-        <label for="regisemail"><b>Email</b></label>
-        <input type="text" name="regisemail" placeholder="Email" required>
-
-        <label for="regispsw"><b>สร้างรหัสผ่านใหม่</b></label>
-        <input type="password" name="regispsw" placeholder="รหัสผ่านที่ใช้สำหรับเว็บนี้เท่านี้" required>
-
-        <button type="submit" name="regbut" value="regis" class="btn">สมัครสมาชิก</button>
-      </form>
-     </div>
-    </div>
-    <!--Regis-->
+    <body>
+    <div class="form-structor">
+    <form name="regis" action="commitpage.php" method="post">
+	<div class="signup">
+		<h2 class="form-title" id="signup"><span>-</span>สมัครสมาชิก</h2>
+		<div class="form-holder">
+			<input type="text" name="regisuser" class="input" placeholder="ชื่อที่จะแสดงในเว็บ" required/>
+			<input type="email" name="regisemail" class="input" placeholder="อีเมลล์" required/>
+			<input type="password" name="regispsw" class="input" placeholder="รหัสผ่านที่ใช้สำหรับเว็บนี้เท่านั้น" required/>
+		</div>
+		<button class="submit-btn" name="regbut" value="regis">ตกลง</button>
+  </form>
+	</div>
+  <form name="login" action="commitpage.php" method="post">
+	<div class="login slide-up">
+		<div class="center">
+			<h2 class="form-title" id="login"><span>-</span>เข้าสู่ระบบ</h2>
+			<div class="form-holder">
+				<input type="email" name="email" class="input" placeholder="ใส่ Email ที่ลงทะเบียนไว้" required/>
+				<input type="password" name="psw" class="input" placeholder="ใส่รหัสผ่านที่ลงทะเบียนไว้" required/>
+			</div>
+			<button class="submit-btn" name="logbut" value="login">เข้าสู่ระบบ</button>
+    </form>
+		</div>
+	</div>
+</div>
     </body>
 </html>
 <script>
-function openForm() {
-  document.getElementById("myForm").style.display = "block";
-}
+console.clear();
 
-function openFormregis() {
-  document.getElementById("myFormregis").style.display = "block";
-}
+const loginBtn = document.getElementById('login');
+const signupBtn = document.getElementById('signup');
+
+loginBtn.addEventListener('click', (e) => {
+	let parent = e.target.parentNode.parentNode;
+	Array.from(e.target.parentNode.parentNode.classList).find((element) => {
+		if(element !== "slide-up") {
+			parent.classList.add('slide-up')
+		}else{
+			signupBtn.parentNode.classList.add('slide-up')
+			parent.classList.remove('slide-up')
+		}
+	});
+});
+
+signupBtn.addEventListener('click', (e) => {
+	let parent = e.target.parentNode;
+	Array.from(e.target.parentNode.classList).find((element) => {
+		if(element !== "slide-up") {
+			parent.classList.add('slide-up')
+		}else{
+			loginBtn.parentNode.parentNode.classList.add('slide-up')
+			parent.classList.remove('slide-up')
+		}
+	});
+});
 </script>

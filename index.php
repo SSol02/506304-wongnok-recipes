@@ -39,10 +39,10 @@
         <input type="text" name="regisuser" placeholder="ชื่อที่จะแสดงในเว็บ" required>
 
         <label for="regisemail"><b>Email</b></label>
-        <input type="text" name="regisemail" placeholder="Email" required>
+        <input type="text" name="regisemail" placeholder="อีเมลล์" required>
 
         <label for="regispsw"><b>สร้างรหัสผ่านใหม่</b></label>
-        <input type="password" name="regispsw" placeholder="รหัสผ่านที่ใช้สำหรับเว็บนี้เท่านี้" required>
+        <input type="password" name="regispsw" placeholder="รหัสผ่านที่ใช้สำหรับเว็บนี้เท่านั้น" required>
 
         <button type="submit" name="regbut" value="regis" class="btn">สมัครสมาชิก</button>
         <button type="button" class="btn cancel" onclick="closeFormregis()">ยกเลิก</button>
@@ -108,6 +108,7 @@
     <h4>ยอดคนถูกใจ <?php echo $recfet['gotlike'];?></h4>
     <input type="hidden" name="itemid" value="<?php echo $recfet['rid'];?>">
     <input type="hidden" name="ownuser" value="<?php echo $recfet['id'];?>">
+    <input type="hidden" name="ownrecipes" value="<?php echo $recfet['user'];?>">
     <button type="submit" name="viewmore" value="getshow">ดูเพิ่มเติม...</button>
     </div>
     </form>

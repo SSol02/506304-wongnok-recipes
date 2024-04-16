@@ -4,6 +4,7 @@ if($_POST['itemid'] == "" && $_POST['ownuser'] == ""){
 }
 $recipesid = $_POST['itemid'];
 $userid = $_POST['ownuser'];
+$reuser = $_POST['ownrecipes'];
 
 session_start();
 
@@ -72,15 +73,33 @@ if($recipesid != ""){
     ?>
     <br><br>
     <?php
-    $chkuserid = htmlspecialchars($_SESSION['showuser'] ?? "");
-    if($chkuserid == ""){ ?>
-    &emsp;&emsp;&emsp;<button type="submit" name="like" value="like" onclick="myFunction()" class="btn">ถูกใจ</button>
+    $chkusername = htmlspecialchars($_SESSION['showuser'] ?? "");
+    $chkuserid = htmlspecialchars($_SESSION['showid'] ?? "");
+    if($chkusername == ""){ ?>
+    &emsp;&emsp;&emsp;<button type="submit" onclick="myFunction()" class="btn">ถูกใจ</button>
     <?php }
 
+    else if($chkusername != "" && ($reuser == $chkusername)){ ?>
+    &emsp;&emsp;&emsp;<button type="submit" class="btn" disabled>ถูกใจ</button>
+    <?php }
 
+    else if($chkusername != "" && ($reuser != $chkusername)){ 
+        $chkwholike = "SELECT likeid FROM hislike WHERE userlike='$chkuserid' AND itemlike='$recipesid'";
+        $sqlwholike = mysqli_query($objCon, $chkwholike);
+        $reswholike = mysqli_fetch_array($sqlwholike,MYSQLI_ASSOC);
+        if(!$reswholike){
+        ?>
+            <form name="belike" method="post" action="mng.php" target="_blank" onsubmit="setTimeout(function(){ location.reload(); }, 500);">
+            <input type="hidden" name="ritemid" value="<?php echo $recipesid;?>">
+            &emsp;&emsp;&emsp;<button type="submit" name="willlike" value="like" class="btn">ถูกใจ</button>
+            </form>
+    <?php }
+        else {
+        echo '&emsp;&emsp;&emsp;<button type="submit" class="btn" disabled>ถูกใจแล้ว</button>';
+        }
+    }
 
-
-    //$_SESSION['showid']
+    session_write_close();
     mysqli_close($objCon);
     ?>
     </body>
