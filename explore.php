@@ -1,6 +1,7 @@
 <?php
 if($_POST['itemid'] == "" && $_POST['ownuser'] == ""){
-    header("location:index.php");
+    //header("location:index.php");
+    echo "here";
 }
 $recipesid = $_POST['itemid'];
 $userid = $_POST['ownuser'];

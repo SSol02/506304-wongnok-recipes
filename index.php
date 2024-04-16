@@ -64,7 +64,6 @@
       <select name="menuchoose" required oninvalid="this.setCustomValidity('เลือกรายการก่อน')" oninput="setCustomValidity('')" style="vertical-align:middle;font: 14pt;font-weight: bold; padding: 5px;">
       <option value="" style="vertical-align:middle;font: 16pt;font-weight: bold;">เลือกรายการ</option>
       <option value="addrecipes" style="vertical-align:middle;">จัดการสูตรอาหาร</option>
-      <option value="editown" style="vertical-align:middle;">จัดการข้อมูลส่วนตัว</option>
       </select>
       <h5>หมายเลขสมาชิก : <?php echo $_SESSION['showid'];?></h5>
       <input type="hidden" name="userid" value="<?php echo $_SESSION['showid'];?>">
@@ -77,15 +76,19 @@
      <?php } session_write_close();?>
 <!-- ---------------------------------------------------------------------------------------------------------->
         <center><img src="src/banner.jpg" style="width: auto; height: auto;"></center><br>
-        <center><div><a href="#">สูตรยอดฮิต</a>&nbsp;&nbsp;&emsp;
-        <a href="#">สูตรมาใหม่</a></div></center><br><br>
+        <center><div><a href="?type=popular" style="text-decoration:none; color: #69c;">สูตรยอดฮิต</a>&nbsp;&nbsp;&emsp;
+        <a href="?type=liked" style="text-decoration:none; color: #69c;">สูตรที่ถูกใจ</a>&nbsp;&nbsp;&emsp;
+        <a href="?type=new" style="text-decoration:none; color: #69c;">สูตรมาใหม่</a></div></center><br><br>
         <div>
-        <center><input type="textbox" size="12" placeholder="ค้นหาสูตรอาหาร" style="font-size:11pt;">&nbsp;
-        <label for="">
-        <input type="submit" value="ค้นหา" name="find"></center>
+        <form name="srcmenu" method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+        <center><input type="textbox" name="menuspec" size="12" placeholder="ค้นหาจาก วัตถุดิบ หรือ ชื่อเมนู" style="font-size:11pt; width:220px;">&nbsp;
+        <input type="submit" name="menusrc" value="ค้นหา" name="find"></center>
+        </form>
         </div>
 <div class="maindiv">
   <?php 
+  $srctype = $_GET['type'];
+
   $serverName = "localhost";
   $userName = "root";
   $userPassword = "";
@@ -93,8 +96,35 @@
   $objCon = mysqli_connect($serverName, $userName, $userPassword, $dbName);
   
   mysqli_set_charset($objCon, "utf8");
+  
+  if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST['menuspec'] != ""){
+    $forsrcmenu = htmlspecialchars($_POST['menuspec'] ?? "");
+    $essrcmenu = mysqli_real_escape_string($objCon, $forsrcmenu);
+    $getrecipe = "SELECT recipes.rid, rname, rpic, rview, user, gotlike, verilog.id FROM recipes JOIN verilog ON verilog.id = recipes.id JOIN viewlike ON recipes.rid = viewlike.rid WHERE (rname LIKE '%$essrcmenu%' OR ringe LIKE '%$essrcmenu%')";
+  }
 
-  $getrecipe = "SELECT recipes.rid,rname,rpic,rview,user,gotlike,verilog.id FROM recipes,verilog,viewlike WHERE verilog.id = recipes.id AND recipes.rid = viewlike.rid";
+  if($_POST['menuspec'] == ""){
+    $getrecipe = "SELECT recipes.rid,rname,rpic,rview,user,gotlike,verilog.id FROM recipes,verilog,viewlike WHERE verilog.id = recipes.id AND recipes.rid = viewlike.rid ORDER BY RAND() LIMIT 15";
+  }
+  
+  if($srctype == "popular"){
+    $forpop = htmlspecialchars($_GET['type'] ?? "");
+    $espop = mysqli_real_escape_string($objCon, $forpop);
+    $getrecipe = "SELECT recipes.rid,rname,rpic,rview,user,gotlike,verilog.id FROM recipes,verilog,viewlike WHERE verilog.id = recipes.id AND recipes.rid = viewlike.rid ORDER BY rview DESC LIMIT 15";
+  }
+
+  if($srctype == "new"){
+    $fornew = htmlspecialchars($_GET['type'] ?? "");
+    $esnew = mysqli_real_escape_string($objCon, $fornew);
+    $getrecipe = "SELECT recipes.rid,rname,rpic,rview,user,gotlike,verilog.id FROM recipes,verilog,viewlike WHERE verilog.id = recipes.id AND recipes.rid = viewlike.rid ORDER BY recipes.rid DESC LIMIT 15";
+  }
+
+  if($srctype == "liked"){
+    $forliked = htmlspecialchars($_GET['type'] ?? "");
+    $esliked = mysqli_real_escape_string($objCon, $forliked);
+    $getrecipe = "SELECT recipes.rid,rname,rpic,rview,user,gotlike,verilog.id FROM recipes,verilog,viewlike WHERE verilog.id = recipes.id AND recipes.rid = viewlike.rid ORDER BY gotlike DESC LIMIT 15";
+  }
+  
   $sqlgetrec = mysqli_query($objCon, $getrecipe);
   while ($recfet = mysqli_fetch_array($sqlgetrec, MYSQLI_ASSOC)) {
   ?>
