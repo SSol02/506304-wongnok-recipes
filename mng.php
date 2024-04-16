@@ -73,6 +73,9 @@ mysqli_query($objCon, $godelvlike);
 $godelhid = "DELETE FROM hisview WHERE rid IN (SELECT rid FROM recipes WHERE rid = '$godelid')";
 mysqli_query($objCon, $godelhid);
 
+$godelhislike = "DELETE FROM hislike WHERE itemlike = '$godelid'";
+mysqli_query($objCon, $godelhislike);
+
 $godel = "DELETE FROM recipes WHERE rid = '$godelid'";
 mysqli_query($objCon, $godel);
 
